@@ -60,6 +60,13 @@ const project: CosmosProject = {
           messages: ["WeightedVoteOption"],
         },
       ],
+      [
+        "cosmwasm.wasm.v1",
+        {
+          file: "./proto/cosmwasm/wasm/v1/query.proto",
+          messages: ["QuerySmartContractStateRequest"],
+        },
+      ],
     ]),
   },
   dataSources: [
