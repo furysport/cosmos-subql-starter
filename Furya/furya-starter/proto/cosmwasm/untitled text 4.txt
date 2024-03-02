@@ -1,0 +1,105 @@
+syntax = "proto3";
+package cosmwasm.wasm.v1;
+
+import "cosmos_proto/cosmos.proto";
+import "google/protobuf/any.proto";
+
+option go_package = "github.com/CosmWasm/wasmd/x/wasm/types";
+
+// Define the Addr message for representing addresses
+message Addr {
+  string address = 1;
+}
+
+// Define the AssetInfoBase message for representing asset information
+message AssetInfoBase {
+  // Variants of asset info
+  oneof asset_info {
+    string native = 1;       // Native SDK coins
+    Addr cw20 = 2;           // CW20 tokens
+    CW1155 cw1155 = 3;
+  }
+}
+
+// Define the AssetQuery message for querying assets
+message AssetQuery {
+  string address = 1;
+  AssetInfoBase asset = 2;
+}
+
+// Define the AllStakedBalancesQuery message for querying all staked balances
+message AllStakedBalancesQuery {
+  string address = 1;
+}
+
+// Define the AllPendingRewardsQuery message for querying all pending rewards
+message AllPendingRewardsQuery {
+  string address = 1;
+}
+
+// Define the QueryMsg message with oneof for different query types
+message QueryMsg {
+  oneof query {
+    // Configuration query
+    ConfigQuery config_query = 1;
+
+    // Validators query
+    ValidatorsQuery validators_query = 2;
+
+    // Whitelisted assets query
+    WhitelistedAssetsQuery whitelisted_assets_query = 3;
+
+    // Reward distribution query
+    RewardDistributionQuery reward_distribution_query = 4;
+
+    // Staked balance query
+    StakedBalanceQuery staked_balance_query = 5;
+
+    // Pending rewards query
+    PendingRewardsQuery pending_rewards_query = 6;
+
+    // All staked balances query
+    AllStakedBalancesQuery all_staked_balances_query = 7;
+
+    // All pending rewards query
+    AllPendingRewardsQuery all_pending_rewards_query = 8;
+
+    // Total staked balances query
+    TotalStakedBalancesQuery total_staked_balances_query = 9;
+  }
+}
+
+// Configuration query message
+message ConfigQuery {
+  map<string, google.protobuf.Any> config = 1;
+}
+
+// Validators query message
+message ValidatorsQuery {
+  map<string, google.protobuf.Any> validators = 1;
+}
+
+// Whitelisted assets query message
+message WhitelistedAssetsQuery {
+  map<string, google.protobuf.Any> whitelisted_assets = 1;
+}
+
+// Reward distribution query message
+message RewardDistributionQuery {
+  map<string, google.protobuf.Any> reward_distribution = 1;
+}
+
+// Staked balance query message
+message StakedBalanceQuery {
+  AssetQuery staked_balance = 1;
+}
+
+// Pending rewards query message
+message PendingRewardsQuery {
+  AssetQuery pending_rewards = 1;
+}
+
+// Total staked balances query message
+message TotalStakedBalancesQuery {
+  map<string, google.protobuf.Any> total_staked_balances = 1;
+}

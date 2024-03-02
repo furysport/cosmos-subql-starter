@@ -61,10 +61,17 @@ const project: CosmosProject = {
         },
       ],
       [
-        "cosmwasm.wasm.v1",
+        "cosmwasm.wasm.v1.query",
         {
           file: "./proto/cosmwasm/wasm/v1/query.proto",
           messages: ["QuerySmartContractStateRequest"],
+        },
+      ],
+      [
+        "cosmwasm.wasm.v1.alliance",
+        {
+          file: "./proto/cosmwasm/wasm/v1/alliance.proto",
+          messages: ["ValidatorsQuery", "RewardDistributionQuery", "TotalStakedBalancesQuery"],
         },
       ],
     ]),
