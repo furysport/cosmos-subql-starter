@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package cosmwasm.wasm.v1;
 
-
 import "gogoproto/gogo.proto";
 import "cosmwasm/wasm/v1/types.proto";
 import "google/api/annotations.proto";
@@ -13,124 +12,152 @@ option (gogoproto.goproto_getters_all) = false;
 option (gogoproto.equal_all) = false;
 
 service RotoQuerier {
-    // Queries the pool data
-    rpc GetPool(GetPoolRequest) returns (GetPoolResponse) {}
+  // Queries the pool data
+  rpc GetPool(GetPoolRequest) returns (GetPoolResponse) {
+    option (google.api.http) = {
+      get: "/cosmwasm/wasm/v1/pool/{chain_name_id}/{address}"
+    };
+  }
 
-    // Queries the flows data
-    rpc GetFlows(GetFlowsRequest) returns (GetFlowsResponse) {}
+  // Queries the flows data
+  rpc GetFlows(GetFlowsRequest) returns (GetFlowsResponse) {
+    option (google.api.http) = {
+      get: "/cosmwasm/wasm/v1/flows/{chain_name_id}/{address}"
+    };
+  }
 
-    // Queries healthy RPC endpoints
-    rpc GetHealthyRPCs(GetHealthyRPCsRequest) returns (GetHealthyRPCsResponse) {}
+  // Queries healthy RPC endpoints
+  rpc GetHealthyRPCs(GetHealthyRPCsRequest) returns (GetHealthyRPCsResponse) {
+    option (google.api.http) = {
+      get: "/cosmwasm/wasm/v1/healthyrpcs/{chain_name_id}"
+    };
+  }
 
-    // Queries a random healthy RPC endpoint
-    rpc GetRandomRPC(GetRandomRPCRequest) returns (GetRandomRPCResponse) {}
+  // Queries a random healthy RPC endpoint
+  rpc GetRandomRPC(GetRandomRPCRequest) returns (GetRandomRPCResponse) {
+    option (google.api.http) = {
+      get: "/cosmwasm/wasm/v1/randomrpc/{chain_name_id}"
+    };
+  }
 
-    // Queries healthy REST endpoints
-    rpc GetHealthyRestEndpoints(GetHealthyRestEndpointsRequest) returns (GetHealthyRestEndpointsResponse) {}
+  // Queries healthy REST endpoints
+  rpc GetHealthyRestEndpoints(GetHealthyRestEndpointsRequest) returns (GetHealthyRestEndpointsResponse) {
+    option (google.api.http) = {
+      get: "/cosmwasm/wasm/v1/healthyrests/{chain_name_id}"
+    };
+  }
 
-    // Queries prices
-    rpc GetPrices(GetPricesRequest) returns (GetPricesResponse) {}
+  // Queries prices
+  rpc GetPrices(GetPricesRequest) returns (GetPricesResponse) {
+    option (google.api.http) = {
+      get: "/cosmwasm/wasm/v1/prices"
+    };
+  }
 
-    // Queries gas prices
-    rpc GetGasPrices(GetGasPricesRequest) returns (GetGasPricesResponse) {}
+  // Queries gas prices
+  rpc GetGasPrices(GetGasPricesRequest) returns (GetGasPricesResponse) {
+    option (google.api.http) = {
+      get: "/cosmwasm/wasm/v1/gasprices"
+    };
+  }
 }
 
 message GetPoolRequest {
-    string chain_name_id = 1;
-    string address = 2;
+  string chain_name_id = 1;
+  string address = 2;
 }
 
 message GetPoolResponse {
-    PoolData data = 1;
+  PoolData data = 1;
 }
 
 message PoolData {
-    repeated PoolAsset assets = 1;
-    string total_share = 2;
+  repeated PoolAsset assets = 1;
+  string total_share = 2;
 }
 
 message PoolAsset {
-    AssetInfo info = 1;
-    string amount = 2;
+  AssetInfo info = 1;
+  string amount = 2;
 }
 
 message AssetInfo {
-    NativeToken native_token = 1;
+  NativeToken native_token = 1;
 }
 
 message NativeToken {
-    string denom = 1;
+  string denom = 1;
 }
 
 message GetFlowsRequest {
-    string chain_name_id = 1;
-    string address = 2;
+  string chain_name_id = 1;
+  string address = 2;
 }
 
 message GetFlowsResponse {
-    repeated FlowData data = 1;
+  repeated FlowData data = 1;
 }
 
 message FlowData {
-    int32 flow_id = 1;
-    string flow_creator = 2;
-    FlowAsset flow_asset = 3;
-    string claimed_amount = 4;
-    string curve = 5;
-    int32 start_epoch = 6;
-    int32 end_epoch = 7;
-    map<int32, string> emitted_tokens = 8;
-    map<string, string> asset_history = 9;
+  int32 flow_id = 1;
+  string flow_creator = 2;
+  FlowAsset flow_asset = 3;
+  string claimed_amount = 4;
+  string curve = 5;
+  int32 start_epoch = 6;
+  int32 end_epoch = 7;
+  map<int32, string> emitted_tokens = 8;
+  map<string, string> asset_history = 9;
 }
 
 message FlowAsset {
-    AssetInfo info = 1;
-    string amount = 2;
+  AssetInfo info = 1;
+  string amount = 2;
 }
 
 message GetHealthyRPCsRequest {
-    string chain_name_id = 1;
+  string chain_name_id = 1;
 }
 
 message GetHealthyRPCsResponse {
-    repeated string rpc_endpoints = 1;
+  repeated string rpc_endpoints = 1;
 }
 
 message GetRandomRPCRequest {
-    string chain_name_id = 1;
+  string chain_name_id = 1;
 }
 
 message GetRandomRPCResponse {
-    string rpc_endpoint = 1;
+  string rpc_endpoint = 1;
 }
 
 message GetHealthyRestEndpointsRequest {
-    string chain_name_id = 1;
+  string chain_name_id = 1;
 }
 
 message GetHealthyRestEndpointsResponse {
-    repeated string rest_endpoints = 1;
+  repeated string rest_endpoints = 1;
 }
 
 message GetPricesRequest {
-    repeated string ids = 1;
+  repeated string ids = 1;
 }
 
 message GetPricesResponse {
-    map<string, PriceData> data = 1;
+  map<string, PriceData> data = 1;
 }
 
 message PriceData {
-    double usd = 1;
+  double usd = 1;
 }
 
 message GetGasPricesRequest {}
 
 message GetGasPricesResponse {
-    map<string, GasPrice> data = 1;
+  map<string, GasPrice> data = 1;
 }
 
 message GasPrice {
-    string denom = 1;
-    double amount = 2;
+  string denom = 1;
+  double amount = 2;
 }
