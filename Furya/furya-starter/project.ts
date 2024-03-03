@@ -68,17 +68,10 @@ const project: CosmosProject = {
         },
       ],
       [
-        "cosmwasm.wasm.v1.alliance",
-        {
-          file: "./proto/cosmwasm/wasm/v1/alliance.proto",
-          messages: ["ValidatorsQuery", "RewardDistributionQuery", "TotalStakedBalancesQuery"],
-        },
-      ],
-      [
         "cosmwasm.wasm.v1.roto",
         {
           file: "./proto/cosmwasm/wasm/v1/roto.proto",
-          messages: ["PoolRequest", "FlowRequest", "ChainNameRequest", "RPCResponse", "RestResponse", "PriceRequest"],
+          messages: ["GetPoolRequest", "GetFlowsRequest", "GetHealthyRPCsRequest", "GetRandomRPCRequest", "GetHealthyRestEndpointsRequest", "GetPricesRequest", "GetGasPricesRequest"],
         },
       ],
     ]),

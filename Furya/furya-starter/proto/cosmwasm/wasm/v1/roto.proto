@@ -2,100 +2,135 @@ syntax = "proto3";
 
 package cosmwasm.wasm.v1;
 
-import "cosmos/base/v1beta1/coin.proto";
+
+import "gogoproto/gogo.proto";
 import "cosmwasm/wasm/v1/types.proto";
-import "google/protobuf/any.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
 
-// Represents a pool's details.
-message Pool {
-  string id = 1;
-  repeated Asset assets = 2;
-  string total_share = 3;
-  double usdVolume24h = 4;
-  double usdVolume7d = 5;
-  double tvl = 6;
-  double totalLiquidity = 7;
-  double apr7d = 8;
-  string ratio = 9;
+option go_package = "github.com/CosmWasm/wasmd/x/wasm/types";
+option (gogoproto.goproto_getters_all) = false;
+option (gogoproto.equal_all) = false;
+
+service RotoQuerier {
+    // Queries the pool data
+    rpc GetPool(GetPoolRequest) returns (GetPoolResponse) {}
+
+    // Queries the flows data
+    rpc GetFlows(GetFlowsRequest) returns (GetFlowsResponse) {}
+
+    // Queries healthy RPC endpoints
+    rpc GetHealthyRPCs(GetHealthyRPCsRequest) returns (GetHealthyRPCsResponse) {}
+
+    // Queries a random healthy RPC endpoint
+    rpc GetRandomRPC(GetRandomRPCRequest) returns (GetRandomRPCResponse) {}
+
+    // Queries healthy REST endpoints
+    rpc GetHealthyRestEndpoints(GetHealthyRestEndpointsRequest) returns (GetHealthyRestEndpointsResponse) {}
+
+    // Queries prices
+    rpc GetPrices(GetPricesRequest) returns (GetPricesResponse) {}
+
+    // Queries gas prices
+    rpc GetGasPrices(GetGasPricesRequest) returns (GetGasPricesResponse) {}
 }
 
-// Represents an asset within a pool.
-message Asset {
-  Info info = 1;
-  string amount = 2;
+message GetPoolRequest {
+    string chain_name_id = 1;
+    string address = 2;
 }
 
-// Asset information, supporting different asset types.
-message Info {
-  oneof asset_type {
+message GetPoolResponse {
+    PoolData data = 1;
+}
+
+message PoolData {
+    repeated PoolAsset assets = 1;
+    string total_share = 2;
+}
+
+message PoolAsset {
+    AssetInfo info = 1;
+    string amount = 2;
+}
+
+message AssetInfo {
     NativeToken native_token = 1;
-    Token contract_addr = 2;
-  }
 }
 
-// Represents a native token.
 message NativeToken {
-  string denom = 1;
+    string denom = 1;
 }
 
-// Represents a CW20 token via contract address.
-message Token {
-  string contract_addr = 1;
+message GetFlowsRequest {
+    string chain_name_id = 1;
+    string address = 2;
 }
 
-// Represents a flow's details.
-message Flow {
-  int32 flow_id = 1;
-  string flow_label = 2;
-  string flow_creator = 3;
-  Asset flow_asset = 4;
-  string claimed_amount = 5;
-  string curve = 6;
-  int32 start_epoch = 7;
-  int32 end_epoch = 8;
-  map<int32, string> emitted_tokens = 9;
+message GetFlowsResponse {
+    repeated FlowData data = 1;
 }
 
-// Service definition for blockchain interactions.
-service BlockchainService {
-  rpc GetPool (PoolRequest) returns (Pool) {}
-  rpc GetFlows (FlowRequest) returns (FlowResponse) {}
-  rpc GetHealthyRPCs (ChainNameRequest) returns (RPCResponse) {}
-  rpc GetHealthyRestEndpoints (ChainNameRequest) returns (RestResponse) {}
-  rpc GetPrices (PriceRequest) returns (PriceResponse) {}
+message FlowData {
+    int32 flow_id = 1;
+    string flow_creator = 2;
+    FlowAsset flow_asset = 3;
+    string claimed_amount = 4;
+    string curve = 5;
+    int32 start_epoch = 6;
+    int32 end_epoch = 7;
+    map<int32, string> emitted_tokens = 8;
+    map<string, string> asset_history = 9;
 }
 
-// Request and response messages for service methods.
-message PoolRequest {
-  string chainNameId = 1;
-  string address = 2;
+message FlowAsset {
+    AssetInfo info = 1;
+    string amount = 2;
 }
 
-message FlowRequest {
-  string chainNameId = 1;
-  string address = 2;
+message GetHealthyRPCsRequest {
+    string chain_name_id = 1;
 }
 
-message ChainNameRequest {
-  string chainNameId = 1;
+message GetHealthyRPCsResponse {
+    repeated string rpc_endpoints = 1;
 }
 
-message RPCResponse {
-  repeated string rpcs = 1;
+message GetRandomRPCRequest {
+    string chain_name_id = 1;
 }
 
-message RestResponse {
-  repeated string rests = 1;
+message GetRandomRPCResponse {
+    string rpc_endpoint = 1;
 }
 
-message PriceRequest {
-  repeated string ids = 1;
+message GetHealthyRestEndpointsRequest {
+    string chain_name_id = 1;
 }
 
-message PriceResponse {
-  map<string, cosmos.base.v1beta1.Coin> prices = 1; // Using Coin from Cosmos SDK for price representation.
+message GetHealthyRestEndpointsResponse {
+    repeated string rest_endpoints = 1;
 }
 
-message FlowResponse {
-  repeated Flow flows = 1;
+message GetPricesRequest {
+    repeated string ids = 1;
+}
+
+message GetPricesResponse {
+    map<string, PriceData> data = 1;
+}
+
+message PriceData {
+    double usd = 1;
+}
+
+message GetGasPricesRequest {}
+
+message GetGasPricesResponse {
+    map<string, GasPrice> data = 1;
+}
+
+message GasPrice {
+    string denom = 1;
+    double amount = 2;
 }
