@@ -74,6 +74,13 @@ const project: CosmosProject = {
           messages: ["ValidatorsQuery", "RewardDistributionQuery", "TotalStakedBalancesQuery"],
         },
       ],
+      [
+        "cosmwasm.wasm.v1.roto",
+        {
+          file: "./proto/cosmwasm/wasm/v1/roto.proto",
+          messages: ["GetPool", "GetFlows", "GetHealthyRPCs", "GetHealthyRestEndpoints", "GetPrices"],
+        },
+      ],
     ]),
   },
   dataSources: [
