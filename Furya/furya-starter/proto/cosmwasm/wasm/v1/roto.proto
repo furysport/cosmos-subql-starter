@@ -15,56 +15,56 @@ service RotoQuerier {
   // Queries the pool data
   rpc GetPool(GetPoolRequest) returns (GetPoolResponse) {
     option (google.api.http) = {
-      get: "/cosmwasm/wasm/v1/pool/{chain_name_id}/{address}"
+      get: "/cosmwasm/wasm/v1/query/{chain_name_id}/pool/{address}"
     };
   }
 
   // Queries the flows data
   rpc GetFlows(GetFlowsRequest) returns (GetFlowsResponse) {
     option (google.api.http) = {
-      get: "/cosmwasm/wasm/v1/flows/{chain_name_id}/{address}"
+      get: "/cosmwasm/wasm/v1/query/{chain_name_id}/flows/{address}"
     };
   }
 
   // Queries healthy RPC endpoints
   rpc GetHealthyRPCs(GetHealthyRPCsRequest) returns (GetHealthyRPCsResponse) {
     option (google.api.http) = {
-      get: "/cosmwasm/wasm/v1/healthyrpcs/{chain_name_id}"
+      get: "/cosmwasm/wasm/v1/api/rpcs/{chain_name_id}"
     };
   }
 
   // Queries a random healthy RPC endpoint
   rpc GetRandomRPC(GetRandomRPCRequest) returns (GetRandomRPCResponse) {
     option (google.api.http) = {
-      get: "/cosmwasm/wasm/v1/randomrpc/{chain_name_id}"
+      get: "/cosmwasm/wasm/v1/api/randomrpc/{chain_name_id}"
     };
   }
 
   // Queries healthy REST endpoints
   rpc GetHealthyRestEndpoints(GetHealthyRestEndpointsRequest) returns (GetHealthyRestEndpointsResponse) {
     option (google.api.http) = {
-      get: "/cosmwasm/wasm/v1/healthyrests/{chain_name_id}"
+      get: "/cosmwasm/wasm/v1/api/rests/{chain_name_id}"
     };
   }
 
   // Queries prices
   rpc GetPrices(GetPricesRequest) returns (GetPricesResponse) {
     option (google.api.http) = {
-      get: "/cosmwasm/wasm/v1/prices"
+      get: "/cosmwasm/wasm/v1/api/prices"
     };
   }
 
   // Queries gas prices
   rpc GetGasPrices(GetGasPricesRequest) returns (GetGasPricesResponse) {
     option (google.api.http) = {
-      get: "/cosmwasm/wasm/v1/gasprices"
+      get: "/cosmwasm/wasm/v1/api/gasprices"
     };
   }
 }
 
 message GetPoolRequest {
-  string chain_name_id = 1;
-  string address = 2;
+  string chain_name_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string address = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message GetPoolResponse {
@@ -90,8 +90,8 @@ message NativeToken {
 }
 
 message GetFlowsRequest {
-  string chain_name_id = 1;
-  string address = 2;
+  string chain_name_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string address = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message GetFlowsResponse {
@@ -116,7 +116,7 @@ message FlowAsset {
 }
 
 message GetHealthyRPCsRequest {
-  string chain_name_id = 1;
+  string chain_name_id = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message GetHealthyRPCsResponse {
@@ -124,7 +124,7 @@ message GetHealthyRPCsResponse {
 }
 
 message GetRandomRPCRequest {
-  string chain_name_id = 1;
+  string chain_name_id = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message GetRandomRPCResponse {
@@ -132,7 +132,7 @@ message GetRandomRPCResponse {
 }
 
 message GetHealthyRestEndpointsRequest {
-  string chain_name_id = 1;
+  string chain_name_id = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message GetHealthyRestEndpointsResponse {
