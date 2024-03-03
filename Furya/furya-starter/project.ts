@@ -78,7 +78,7 @@ const project: CosmosProject = {
         "cosmwasm.wasm.v1.roto",
         {
           file: "./proto/cosmwasm/wasm/v1/roto.proto",
-          messages: ["GetPool", "GetFlows", "GetHealthyRPCs", "GetHealthyRestEndpoints", "GetPrices"],
+          messages: ["PoolRequest", "FlowRequest", "ChainNameRequest", "RPCResponse", "RestResponse", "PriceRequest"],
         },
       ],
     ]),
