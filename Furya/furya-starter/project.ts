@@ -67,13 +67,6 @@ const project: CosmosProject = {
           messages: ["QuerySmartContractStateRequest"],
         },
       ],
-      [
-        "cosmwasm.wasm.v1.roto",
-        {
-          file: "./proto/cosmwasm/wasm/v1/roto.proto",
-          messages: ["GetPoolRequest", "GetFlowsRequest", "GetHealthyRPCsRequest", "GetRandomRPCRequest", "GetHealthyRestEndpointsRequest", "GetPricesRequest", "GetGasPricesRequest"],
-        },
-      ],
     ]),
   },
   dataSources: [
@@ -94,12 +87,29 @@ const project: CosmosProject = {
             },
           },
           {
+            handler: "handleEvent",
+            kind: CosmosHandlerKind.Event,
+            filter: {
+              type: "execute",
+              messageFilter: {
+                type: "/cosmwasm.wasm.v1.MsgExecuteContract",
+              },
+            },
+          },
+          {
             handler: "handleMessage",
             kind: CosmosHandlerKind.Message,
             filter: {
               type: "/cosmos.bank.v1beta1.MsgSend",
             },
           },
+          {
+            handler: "handleMessage",
+            kind: CosmosHandlerKind.Message,
+            filter: {
+              type: "/cosmwasm.wasm.v1.MsgExecuteContract",
+            },
+          }
         ],
       },
     },

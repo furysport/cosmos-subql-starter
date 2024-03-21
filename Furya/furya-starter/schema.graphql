@@ -1,21 +1,72 @@
 # To improve query performance, we strongly suggest adding indexes to any field that you plan to filter or sort by
 # Add the `@index` or `@index(unique: true)` annotation after any non-key field
 # https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
+scalar JSON
 
 type TransferEvent @entity {
   id: ID!
-  blockHeight: BigInt!
-  txHash: String!
-  recipient: String!
-  sender: String!
-  amount: String!
+  blockHeight: BigInt! @index
+  txHash: String! @index(unique: true)
+  recipient: String! @index
+  sender: String! @index
+  amount: String! @index
 }
 
 type Message @entity {
   id: ID!
-  blockHeight: BigInt!
-  txHash: String!
-  from: String!
-  to: String!
+  blockHeight: BigInt! @index
+  txHash: String! @index(unique: true)
+  from: String! @index
+  to: String! @index
+  amount: String! @index
+}
+
+type Asset {
+  info: AssetInfo!
   amount: String!
+}
+
+type AssetInfo {
+  native_token: NativeTokenInfo!
+}
+
+type NativeTokenInfo {
+  denom: String!
+}
+
+type PoolData {
+  assets: [Asset!]!
+  total_share: String!
+}
+
+type Flow {
+  flow_id: Int!
+  flow_label: String!
+  flow_creator: String!
+  flow_asset: Asset!
+  claimed_amount: String!
+  curve: String!
+  start_epoch: Int!
+  end_epoch: Int!
+  emitted_tokens: JSON! @index
+  asset_history: JSON! @index
+}
+
+type Query {
+  getPoolData(chainNameId: String!, address: String!): PoolData
+  getFlowsData(chainNameId: String!, address: String!): [Flow!]!
+  getRpcEndpoints(chainNameId: String!): [String!]!
+  getRestEndpoints(chainNameId: String!): [String!]!
+  getPrices: [Price!]!
+  getGasPrices: [GasPrice!]!
+}
+
+type Price {
+  id: String!
+  usd: Float!
+}
+
+type GasPrice {
+  denom: String!
+  amount: Float!
 }
